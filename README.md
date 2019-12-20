@@ -15,7 +15,7 @@ Then, you just have to enter the following command to build the full environment
 
 Finally, to flash a SD card, simply use the flash-sdcard tool to burn the image onto your SD card.
   
-     $ ./utils/flash-sdcard
+    $ ./utils/flash-sdcard
 
 
 ### How to customize Linux Kernel version?
