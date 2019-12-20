@@ -105,5 +105,9 @@ dd if=${BINARIES_DIR}/u-boot.bin.sd.bin of="${BINARIES_DIR}/sdcard.img" conv=fsy
 
 # flash u-boot directly on sd card <temp>
 
+echo "========================================================================"
+echo "	Done. Please run $ ./utils/flash-sdcard to flash image "
+echo "========================================================================"
+
 # sudo dd if=${BINARIES_DIR}/u-boot.bin.sd.bin of=/dev/sda conv=fsync bs=1 count=442
 # sudo dd if=${BINARIES_DIR}/u-boot.bin.sd.bin of=/dev/sda conv=fsync bs=512 skip=1 seek=1
