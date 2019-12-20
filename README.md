@@ -31,4 +31,3 @@ If you want to add any packages, drivers or utilities, use the following command
     $ make menuconfig
 
 In the "Target Packages" tab, you can enable some useful packages, like gdb or openssh. Don't forget to save your new configuration by clicking on the "Save" button.
-
