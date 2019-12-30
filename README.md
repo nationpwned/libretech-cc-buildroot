@@ -2,6 +2,17 @@
 
 This version of Buildroot can generated a full environment (amlogic bootloader, U-Boot, Linux Kernel and rootfs) for the Amlogic S905X LibreTech-CC aka "LePotato" board.
 
+### How to install this tool?
+
+Copy the following command to clone this repository to your work environment.
+
+    $ git clone https://github.com/mathieu-lm/libretech-cc-buildroot.git
+    $ cd libretech-cc-buildroot
+
+This tool depends on the following packages. To install them, use the following command.
+
+    $ sudo apt install sed make binutils gcc g++ bash patch gzip bzip2 perl tar cpio unzip rsync file bc wget python git
+
 
 ### How to build an image for SD card?
 
@@ -14,7 +25,7 @@ Then, you just have to enter the following command to build the full environment
     $ make
 
 Finally, to flash a SD card, simply use the flash-sdcard tool to burn the image onto your SD card.
-  
+
     $ ./utils/flash-sdcard
 
 
