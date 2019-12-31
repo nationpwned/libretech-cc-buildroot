@@ -44,6 +44,41 @@ Finally, to flash a SD card, simply use the flash-sdcard tool to burn the image 
 
     $ ./utils/flash-sdcard
 
+### How to build an image for eMMC?
+
+This tool is also able to generate eMMC images for the S905X Libretech-CC board. (Experimental)
+
+#### Preparation of the environment
+
+Copy the configuration file for eMMC image using the following command.
+
+    $ cp configs/meson-gxl-s905x-libretech-cc-emmc_defconfig .config 
+    
+If it's your first build, install the Amlogic eMMC tool.
+    
+    $ ./utils/amlogic/aml-emmc-tools/INSTALL
+
+#### Building and packing the image
+
+Build the Amlogic Vndor U-Boot seperately with the following command.
+
+    $ ./utils/amlogic/aml-uboot-builder/build-aml-uboot
+    
+Then just call "make" to build the complete environment.
+
+    $ make clean
+    $ make
+
+#### Flashing the eMMC with USB cable
+
+The image file for eMMC is now ready. To flash it, just use the following command.
+
+    $ ./utils/flash-emmc
+
+**Note: your Potato board must be in USB flashing mode.**
+
+To do so, type the U-Boot command "update" and plug the USB cable.
+
 
 ### How to customize Linux Kernel version?
 
