@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ==========================
-# Flash
+# Flash SD card
 # ==========================
 
 read -p "Insert SD card device then press any key"

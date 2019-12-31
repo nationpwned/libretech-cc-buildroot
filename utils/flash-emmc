@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# ==========================
+# Flash eMMC
+# ==========================
+
+FULL_PATH=$(realpath $0)
+THIS_DIR=$(dirname $FULL_PATH)
+
+cd ${THIS_DIR}
+
+FOUND=0
+
+while true; do
+
+    read -p "Connect your Potato board in USB"
+    echo "======================================================="
+
+    lsusb|grep "Amlogic"
+
+    if lsusb|grep -q "Amlogic"; then
+        FOUND=1
+    fi
+
+    if [ ${FOUND} == 1 ]
+    then 
+        break
+    fi
+done
+
+echo "======================================================="
+
+echo "Amlogic USB device found."
+
+set +e
+
+echo "Flashing image file on eMMC..."
+
+FLASH_TOOL=${THIS_DIR}/amlogic/aml-emmc-tools/burn-tool
+EMMC_BIN_DIR=${THIS_DIR}/../output/images/emmc
+
+sudo ${FLASH_TOOL} -i ${EMMC_BIN_DIR}/aml_upgrade_package.img
+
+set -e
+
+echo "Done."

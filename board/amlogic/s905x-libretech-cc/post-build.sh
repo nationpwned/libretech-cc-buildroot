@@ -16,10 +16,21 @@
 BOARD_DIR="$(dirname $0)"
 MKIMAGE=utils/amlogic/binaries/mkimage
 
-# for mainline U-Boot
-$MKIMAGE -C none -A arm64 -T script -d $BOARD_DIR/boot_from_sdcard.cmd $BINARIES_DIR/boot.scr
 # for Amlogic U-Boot
-$MKIMAGE -C none -A arm64 -T script -d $BOARD_DIR/boot_from_sdcard.cmd $BINARIES_DIR/aml_autoscript
+if [ "$2" = "emmc" ] 
+then
+    # for eMMC
+    echo "INFO: eMMC aml_autoscript"
+    $MKIMAGE -C none -A arm64 -T script -d $BOARD_DIR/boot_from_emmc.cmd $BINARIES_DIR/boot.scr
+
+    $MKIMAGE -C none -A arm64 -T script -d $BOARD_DIR/boot_from_emmc.cmd $BINARIES_DIR/aml_autoscript
+else
+    # for SD card
+    echo "INFO: SD CARD aml_autoscript"
+    $MKIMAGE -C none -A arm64 -T script -d $BOARD_DIR/boot_from_sdcard.cmd $BINARIES_DIR/boot.scr
+
+    $MKIMAGE -C none -A arm64 -T script -d $BOARD_DIR/boot_from_sdcard.cmd $BINARIES_DIR/aml_autoscript
+fi
 
 # move dtb in amlogic subdir
 # mkdir ${BINARIES_DIR}/amlogic

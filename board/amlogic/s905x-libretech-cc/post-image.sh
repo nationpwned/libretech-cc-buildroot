@@ -1,14 +1,26 @@
 #!/bin/sh
 
 BOARD_DIR="$(dirname $0)"
-GENIMAGE_CFG="${BOARD_DIR}/genimage.cfg"
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
+
+GENIMAGE_SDCARD_CFG="${BOARD_DIR}/genimage-sdcard.cfg"
+GENIMAGE_EMMC_CFG="${BOARD_DIR}/genimage-emmc.cfg"
+GENIMAGE_CFG=""
 
 # set -x
 
 rm -rf "${GENIMAGE_TMP}"
 
 # generate image
+
+if [ "$2" = "emmc" ] 
+then
+	# eMMC configuration file
+	GENIMAGE_CFG=${GENIMAGE_EMMC_CFG}
+else
+	# SD card configuration file
+	GENIMAGE_CFG=${GENIMAGE_SDCARD_CFG}
+fi
 
 genimage                               \
 	--rootpath "${TARGET_DIR}"     \
@@ -19,10 +31,13 @@ genimage                               \
 
 # merge bootloaders
 
-AML_BIN_DIR=utils/amlogic/u-boot
-AML_UBOOT_BINARIES=utils/amlogic/aml-uboot-builder/aml-uboot/fip
+AML_TOOLS_DIR=utils/amlogic
+AML_BIN_DIR=${AML_TOOLS_DIR}/u-boot
+AML_UBOOT_BINARIES=${AML_TOOLS_DIR}/aml-uboot-builder/aml-uboot/fip
+AML_EMMC_TOOLS_DIR=${AML_TOOLS_DIR}/aml-emmc-tools
+
 OUTPUT_BIN_DIR=${BINARIES_DIR}/tmp
-BOARD_DIR=board/amlogic/s905x-libretech-cc
+EMMC_BIN_DIR=${BINARIES_DIR}/emmc
 
 mkdir ${OUTPUT_BIN_DIR}
 rm ${OUTPUT_BIN_DIR}/*
@@ -103,7 +118,7 @@ then
 ##########################################
 # 	Amlogic VENDOR U-Boot
 ##########################################
-elif [ "$2" = "aml_uboot" ]
+elif [ "$2" = "aml_uboot" ] || [ "$2" = "emmc" ]
 then
 
 	echo "========================================================================"
@@ -119,7 +134,7 @@ then
 
 	fi
 
-	cp ${AML_UBOOT_BINARIES}/u-boot.bin.* ${BINARIES_DIR}/
+	cp ${AML_UBOOT_BINARIES}/u-boot.bi* ${BINARIES_DIR}/
 
 	echo "Amlogic U-Boot binaries found."
 
@@ -133,16 +148,44 @@ exit
 
 fi
 
-echo "Adding bootloader to SD card image..."
 
-dd if=${BINARIES_DIR}/u-boot.bin.sd.bin of="${BINARIES_DIR}/sdcard.img" conv=fsync,notrunc bs=1 count=442 status=progress
-dd if=${BINARIES_DIR}/u-boot.bin.sd.bin of="${BINARIES_DIR}/sdcard.img" conv=fsync,notrunc bs=512 skip=1 seek=1 status=progress
+if [ ! "$2" = "emmc" ]
+then
+	# Generating SDCARD.IMG
 
-# flash u-boot directly on sd card <temp>
+	echo "Adding bootloader to SD card image..."
 
-echo "========================================================================"
-echo "	Done. Please run $ ./utils/flash-sdcard to flash image "
-echo "========================================================================"
+	dd if=${BINARIES_DIR}/u-boot.bin.sd.bin of="${BINARIES_DIR}/sdcard.img" conv=fsync,notrunc bs=1 count=442 status=progress
+	dd if=${BINARIES_DIR}/u-boot.bin.sd.bin of="${BINARIES_DIR}/sdcard.img" conv=fsync,notrunc bs=512 skip=1 seek=1 status=progress
 
-# sudo dd if=${BINARIES_DIR}/u-boot.bin.sd.bin of=/dev/sda conv=fsync bs=1 count=442
-# sudo dd if=${BINARIES_DIR}/u-boot.bin.sd.bin of=/dev/sda conv=fsync bs=512 skip=1 seek=1
+	echo "========================================================================"
+	echo "	Done. Please run $ ./utils/flash-sdcard to flash image "
+	echo "========================================================================"
+
+else
+	# Generating EMMC IMG with AMLOGIC_IMAGE_PACKER
+
+	# PACK eMMC image using Amlogic Tools
+
+	set +e
+
+	# make emmc bin dir
+	mkdir ${EMMC_BIN_DIR}
+
+	# copy configuration file to emmc bin dir
+	cp ${BOARD_DIR}/emmc/emmc-image.cfg  		${EMMC_BIN_DIR}
+	cp ${BOARD_DIR}/emmc/platform.conf  		${EMMC_BIN_DIR}
+	cp ${BOARD_DIR}/emmc/aml_sdc_burn.ini 		${EMMC_BIN_DIR}
+
+	# copy files to emmc
+	cp ${BINARIES_DIR}/*						${EMMC_BIN_DIR}
+
+	set -e
+
+	${AML_EMMC_TOOLS_DIR}/aml_image_v2_packer -r ${BOARD_DIR}/emmc/emmc-image.cfg  ${EMMC_BIN_DIR}/ ${EMMC_BIN_DIR}/aml_upgrade_package.img
+
+	echo "========================================================================"
+	echo "	Done. Please run $ ./utils/flash-emmc to flash image "
+	echo "========================================================================"
+
+fi
