@@ -12,14 +12,30 @@ Copy the following command to clone this repository to your work environment.
 This tool depends on the following packages. To install them, use the following command.
 
     $ sudo apt install sed make binutils gcc g++ bash patch gzip bzip2 perl tar cpio unzip rsync file bc wget python git
-
+    
 
 ### How to build an image for SD card?
 
 First, you need to copy the configuration file from the ./configs folder to .config default configuration file.
 
-    $ cp configs/meson-gxl-s905x-libretech-cc_defconfig .config
+Depending on which U-Boot version you want to use, copy the following configuration file.
 
+#### Using Mainline U-Boot (v2020.01-rc5)
+
+    $ cp configs/meson-gxl-s905x-libretech-cc_defconfig .config
+    
+   
+#### Using Amlogic Vendor U-Boot (v2015.01)
+
+    $ cp configs/meson-gxl-s905x-libretech-cc-aml-uboot_defconfig .config
+
+In case of Amlogic Vendor U-Boot, you need to build it seperately by using the following tool.
+
+    $ ./utils/amlogic/aml-uboot-builder/build-aml-uboot.sh
+
+
+### Building the image
+    
 Then, you just have to enter the following command to build the full environment.
 
     $ make
@@ -44,4 +60,8 @@ If you want to add any packages, drivers or utilities, use the following command
 
     $ make menuconfig
 
-In the "Target Packages" tab, you can enable some useful packages, like gdb or openssh. Don't forget to save your new configuration by clicking on the "Save" button.
+In the "Target Packages" tab, you can enable useful packages and librairies.
+
+**Don't forget to save your new configuration by clicking on the "Save" button.**
+
+More information about Buildroot here: https://buildroot.org/downloads/manual/manual.html
