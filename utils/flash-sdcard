@@ -19,13 +19,16 @@ set +e
 sudo umount $DEV"1"
 sudo umount $DEV"2"
 
-echo "Flashing bootloader on SD card..."
+echo "Flashing image file on SD card..."
 
 set -e
 
 # flash u-boot on sdcard
 sudo dd if=output/images/sdcard.img of=$DEV bs=4M status=progress
 
+echo "Done."
+
 sudo eject $DEV
 
-echo "Done."
+echo "SD card ejected."
+
