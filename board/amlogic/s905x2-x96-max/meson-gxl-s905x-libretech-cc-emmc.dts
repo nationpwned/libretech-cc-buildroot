@@ -1,0 +1,50 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Author: Mathieu Le Mauff <mathieu@lemauff.pro>
+ */
+
+/dts-v1/;
+
+#include "amlogic/meson-gxl-s905x-libretech-cc.dts"
+
+/*
+        partitions = "/partitions";
+	logo = "/partitions/logo";
+	system = "/partitions/system";
+	rootfs = "/partitions/rootfs";
+*/
+
+/{
+	partitions {
+		parts = <0x4>;
+		part-0 = <&logo>;
+		part-1 = <&system>;
+		part-2 = <&test>;
+        part-3 = <&rootfs>;
+        phandle = <0xb2>;
+
+		logo: logo {
+			pname = "logo";
+			size = <0x0 0x800000>;
+			mask = <0x1>;
+		};
+
+		system: system {
+			pname = "system";
+			size = <0x0 0x8000000>;
+			mask = <0x1>;
+		};
+
+        test: test {
+			pname = "test";
+			size = <0x0 0x2000000>;
+			mask = <0x1>;
+		};
+
+		rootfs: rootfs {
+			pname = "rootfs";
+			size = <0xffffffff 0xffffffff>;
+			mask = <0x4>;
+		};
+        };
+};
