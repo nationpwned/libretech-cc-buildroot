@@ -5,7 +5,7 @@
 
 /dts-v1/;
 
-#include "amlogic/meson-gxl-s905x-libretech-cc.dts"
+#include "amlogic/meson-g12a-x96-max.dts"
 
 /*
         partitions = "/partitions";

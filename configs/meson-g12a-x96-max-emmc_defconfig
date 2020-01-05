@@ -1,6 +1,6 @@
 #
 # Automatically generated file; DO NOT EDIT.
-# Buildroot 2020.02-git-00443-g2e69290ce5 Configuration
+# Buildroot 2020.02-git-00443-g2e69290ce5-dirty Configuration
 #
 BR2_HAVE_DOT_CONFIG=y
 BR2_HOST_GCC_AT_LEAST_4_9=y
@@ -412,7 +412,7 @@ BR2_ROOTFS_OVERLAY="board/amlogic/s905x2-x96-max/rootfs-overlay"
 BR2_ROOTFS_POST_BUILD_SCRIPT="board/amlogic/s905x2-x96-max/post-build.sh"
 BR2_ROOTFS_POST_FAKEROOT_SCRIPT=""
 BR2_ROOTFS_POST_IMAGE_SCRIPT="board/amlogic/s905x2-x96-max/post-image.sh"
-BR2_ROOTFS_POST_SCRIPT_ARGS="aml_uboot"
+BR2_ROOTFS_POST_SCRIPT_ARGS="emmc"
 
 #
 # Kernel
@@ -446,8 +446,8 @@ BR2_LINUX_KERNEL_GZIP=y
 # BR2_LINUX_KERNEL_XZ is not set
 BR2_LINUX_KERNEL_DTS_SUPPORT=y
 # BR2_LINUX_KERNEL_DTB_IS_SELF_BUILT is not set
-BR2_LINUX_KERNEL_INTREE_DTS_NAME="amlogic/meson-g12a-x96-max"
-BR2_LINUX_KERNEL_CUSTOM_DTS_PATH=""
+BR2_LINUX_KERNEL_INTREE_DTS_NAME=""
+BR2_LINUX_KERNEL_CUSTOM_DTS_PATH="board/amlogic/s905x2-x96-max/meson-g12a-x96-max-emmc.dts"
 # BR2_LINUX_KERNEL_DTB_OVERLAY_SUPPORT is not set
 # BR2_LINUX_KERNEL_INSTALL_TARGET is not set
 BR2_LINUX_KERNEL_NEEDS_HOST_OPENSSL=y
