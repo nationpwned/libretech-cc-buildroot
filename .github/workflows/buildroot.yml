@@ -50,6 +50,5 @@ jobs:
     - name: Download package
       id: package
       run: |
-        cd libretech-cc-buildroot
         cp configs/meson-g12a-x96-max_defconfig .config
         make -j8
