@@ -29,7 +29,9 @@ jobs:
     - name: Clone source code
       working-directory: /workdir
       run: |
-        git clone --depth 1 $REPO_URL -b $REPO_BRANCH master
+        df -hT $PWD
+        git clone --depth 1 $REPO_URL -b $REPO_BRANCH libretech-cc-buildroot
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/libretech-cc-buildroot
 
     - name: Download package
       id: package
