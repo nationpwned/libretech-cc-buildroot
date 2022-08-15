@@ -45,7 +45,7 @@ jobs:
       run: |
         df -hT $PWD
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH
-        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/libretech-cc-buildroot
+        ln -sf /workdir/openwrt $GITHUB_WORKSPACE/
 
     - name: Download package
       id: package
